@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "lambda-loader",
+  "version": "${version}",
+
+  "name": "Lambda-loader",
+  "description": "",
+  "authors": [],
+  "contact": {},
+
+  "license": "GPL-3.0",
+  "icon": "assets/lambda-loader/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "preLaunch": [
+      "com.lambda.lambdaLoader.LambdaLoaderInitializer"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-language-kotlin": ">=${kotlin_loader_version}",
+    "fabric": "*",
+    "minecraft": ">=${minecraft_version}"
+  }
+}
