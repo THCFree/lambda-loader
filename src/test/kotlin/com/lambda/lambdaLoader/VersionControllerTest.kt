@@ -15,8 +15,8 @@ class VersionControllerTest {
     // This is necessary because FabricLoader is not available in the test environment
 
     companion object {
-        private val mavenReleasesUrl = "https://maven.lambda-client.org/releases/com/lambda/lambda/maven-metadata.xml"
-        private val mavenSnapshotsUrl = "https://maven.lambda-client.org/snapshots/com/lambda/lambda/maven-metadata.xml"
+        private const val MAVEN_RELEASES_URL = "https://maven.lambda-client.org/releases/com/lambda/lambda/maven-metadata.xml"
+        private const val MAVEN_SNAPSHOTS_URL = "https://maven.lambda-client.org/snapshots/com/lambda/lambda/maven-metadata.xml"
 
         /**
          * Fetches all unique Minecraft versions available in Maven repositories
@@ -26,7 +26,7 @@ class VersionControllerTest {
 
             // Get versions from releases
             try {
-                val releasesXml = URI(mavenReleasesUrl).toURL().readText()
+                val releasesXml = URI(MAVEN_RELEASES_URL).toURL().readText()
                 versions.addAll(parseMinecraftVersionsFromMaven(releasesXml))
             } catch (e: Exception) {
                 println("Warning: Could not fetch releases: ${e.message}")
@@ -34,7 +34,7 @@ class VersionControllerTest {
 
             // Get versions from snapshots
             try {
-                val snapshotsXml = URI(mavenSnapshotsUrl).toURL().readText()
+                val snapshotsXml = URI(MAVEN_SNAPSHOTS_URL).toURL().readText()
                 versions.addAll(parseMinecraftVersionsFromMaven(snapshotsXml))
             } catch (e: Exception) {
                 println("Warning: Could not fetch snapshots: ${e.message}")
