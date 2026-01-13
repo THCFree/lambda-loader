@@ -1,4 +1,4 @@
-package com.lambda.lambdaLoader.config
+package com.lambda.loader.config
 
 data class Config(
     val releaseMode: ReleaseMode = ReleaseMode.STABLE,

@@ -1,7 +1,7 @@
-package com.lambda.lambdaLoader
+package com.lambda.loader
 
-import com.lambda.lambdaLoader.config.ConfigManager
-import com.lambda.lambdaLoader.config.ReleaseMode
+import com.lambda.loader.config.ConfigManager
+import com.lambda.loader.config.ReleaseMode
 import net.fabricmc.loader.impl.FabricLoaderImpl
 import java.io.File
 import java.net.URI

@@ -1,6 +1,6 @@
-package com.lambda.lambdaLoader
+package com.lambda.loader
 
-import com.lambda.lambdaLoader.config.ConfigManager
+import com.lambda.loader.config.ConfigManager
 import java.io.File
 import java.security.MessageDigest
 import java.util.logging.Logger

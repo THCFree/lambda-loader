@@ -1,6 +1,6 @@
-package com.lambda.lambdaLoader
+package com.lambda.loader
 
-import com.lambda.lambdaLoader.util.FabricUtil
+import com.lambda.loader.util.FabricUtil
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint
 import org.spongepowered.asm.mixin.Mixins
 import java.util.logging.Logger

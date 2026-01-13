@@ -1,8 +1,8 @@
-package com.lambda.lambdaLoader.util
+package com.lambda.loader.util
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.lambda.lambdaLoader.config.ConfigManager
+import com.lambda.loader.config.ConfigManager
 import net.fabricmc.loader.impl.FabricLoaderImpl
 import net.fabricmc.loader.impl.launch.FabricLauncherBase
 import net.fabricmc.loader.impl.lib.classtweaker.impl.ClassTweakerImpl
