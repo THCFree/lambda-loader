@@ -83,8 +83,18 @@ class LoaderVersionController(
     fun checkForUpdate(): String? {
         return try {
             val currentVersion = getCurrentLoaderVersion()
-            val latestVersion = when (getReleaseMode()) {
-                ReleaseMode.STABLE -> checkReleasesVersion()
+
+            // Try to get latest version based on release mode, with fallback
+            var latestVersion = when (getReleaseMode()) {
+                ReleaseMode.STABLE -> {
+                    val releaseVersion = checkReleasesVersion()
+                    if (releaseVersion == null) {
+                        logger.warning("No stable loader version found, falling back to snapshot")
+                        checkSnapshotVersion()
+                    } else {
+                        releaseVersion
+                    }
+                }
                 ReleaseMode.SNAPSHOT -> checkSnapshotVersion()
             }
 
@@ -102,7 +112,9 @@ class LoaderVersionController(
                 logger.info("Loader update available: $currentVersion -> $latestVersion")
                 return latestVersion
             } else {
-                logger.info("Loader is up to date: $currentVersion")
+                if (ConfigManager.config.debug) {
+                    logger.info("Loader is up to date: $currentVersion")
+                }
                 return null
             }
         } catch (e: Exception) {
