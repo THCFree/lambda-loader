@@ -14,8 +14,27 @@ object ConfigManager {
 
     private fun loadConfig(): Config {
         return if (configFile.exists()) {
-            val json = configFile.readText()
-            gson.fromJson(json, Config::class.java)
+            try {
+                val json = configFile.readText()
+                val loadedConfig = gson.fromJson(json, Config::class.java)
+
+                // Merge with defaults to handle new fields
+                val defaultConfig = Config()
+                val mergedConfig = Config(
+                    clientReleaseMode = loadedConfig?.clientReleaseMode ?: defaultConfig.clientReleaseMode,
+                    loaderReleaseMode = loadedConfig?.loaderReleaseMode ?: defaultConfig.loaderReleaseMode,
+                    debug = loadedConfig?.debug ?: defaultConfig.debug
+                )
+
+                // Save merged config to add any new fields
+                saveConfig(mergedConfig)
+                mergedConfig
+            } catch (e: Exception) {
+                // If parsing fails, use defaults
+                val defaultConfig = Config()
+                saveConfig(defaultConfig)
+                defaultConfig
+            }
         } else {
             val defaultConfig = Config()
             saveConfig(defaultConfig)

@@ -37,30 +37,41 @@ class LoaderVersionController(
     override fun getReleaseMode(): ReleaseMode = ConfigManager.config.loaderReleaseMode
 
     /**
-     * Get the current loader version from the manifest or build properties.
+     * Get the current loader version from the Fabric mod metadata.
      * This can be used to check if an update is available.
      */
     fun getCurrentLoaderVersion(): String? {
         return try {
-            // Try to read version from package implementation version
-            val version = this::class.java.`package`?.implementationVersion
-            if (version != null) {
-                logger.info("Current loader version: $version")
+            // Try to read from Fabric mod container
+            val fabricLoader = net.fabricmc.loader.api.FabricLoader.getInstance()
+            val loaderMod = fabricLoader.getModContainer("lambda-loader")
+
+            if (loaderMod.isPresent) {
+                val version = loaderMod.get().metadata.version.friendlyString
+                if (com.lambda.loader.config.ConfigManager.config.debug) {
+                    logger.info("Current loader version: $version")
+                }
                 return version
             }
 
-            // Alternative: read from a properties file
-            val props = this::class.java.classLoader.getResourceAsStream("loader.properties")
-            if (props != null) {
-                val properties = java.util.Properties()
-                properties.load(props)
-                return properties.getProperty("version")
+            // Fallback: try package implementation version
+            val version = this::class.java.`package`?.implementationVersion
+            if (version != null) {
+                if (ConfigManager.config.debug) {
+                    logger.info("Current loader version (from package): $version")
+                }
+                return version
             }
 
-            logger.warning("Could not determine current loader version")
+            if (ConfigManager.config.debug) {
+                logger.warning("Could not determine current loader version")
+            }
             null
         } catch (e: Exception) {
-            logger.warning("Error reading loader version: ${e.message}")
+            if (ConfigManager.config.debug) {
+                logger.warning("Error reading loader version: ${e.message}")
+                e.printStackTrace()
+            }
             null
         }
     }

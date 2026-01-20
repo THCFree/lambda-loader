@@ -9,7 +9,7 @@
   "contact": {},
 
   "license": "GPL-3.0",
-  "icon": "assets/lambda-loader/icon.png",
+  "icon": "assets/lambda-loader/textures/lambda.png",
 
   "environment": "client",
   "entrypoints": {
