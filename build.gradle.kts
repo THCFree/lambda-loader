@@ -89,16 +89,60 @@ tasks.jar {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            artifactId = project.property("archives_base_name") as String
+            groupId = project.property("maven_group") as String
+            artifactId = "loader"
+            version = project.version as String
+
             from(components["java"])
+
+            pom {
+                name.set("Lambda Loader")
+                description.set("A Fabric mod loader for Lambda Client")
+                url.set("https://github.com/lambda-client/Lambda-loader")
+
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("lambda")
+                        name.set("Lambda Client Team")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/lambda-client/Lambda-loader.git")
+                    developerConnection.set("scm:git:ssh://github.com/lambda-client/Lambda-loader.git")
+                    url.set("https://github.com/lambda-client/Lambda-loader")
+                }
+            }
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        // Publish to local maven repository for testing
+        mavenLocal()
+
+        // Publish to remote maven repository
+        // Set credentials via environment variables or gradle.properties:
+        // MAVEN_URL, MAVEN_USERNAME, MAVEN_PASSWORD
+        val mavenUrl = System.getenv("MAVEN_URL") ?: project.findProperty("mavenUrl") as String?
+        val mavenUsername = System.getenv("MAVEN_USERNAME") ?: project.findProperty("mavenUsername") as String?
+        val mavenPassword = System.getenv("MAVEN_PASSWORD") ?: project.findProperty("mavenPassword") as String?
+
+        if (mavenUrl != null && mavenUsername != null && mavenPassword != null) {
+            maven {
+                name = "RemoteMaven"
+                url = uri(mavenUrl)
+                credentials {
+                    username = mavenUsername
+                    password = mavenPassword
+                }
+            }
+        }
     }
 }
