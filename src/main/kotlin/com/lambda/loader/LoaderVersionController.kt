@@ -15,7 +15,7 @@ class LoaderVersionController(
      * The maven repository URL for the loader artifacts.
      * Can be overridden for testing or custom repositories.
      */
-    loaderMavenUrl: String = "https://maven.thcfree.dev"
+    loaderMavenUrl: String = "https://maven.lambda-client.org"
 ) : BaseMavenVersionController(cache, versionMatchingEnabled = false) {
 
     override val mavenUrl: String = loaderMavenUrl
